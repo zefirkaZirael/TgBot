@@ -1,8 +1,12 @@
 import telebot
+from dotenv import load_dotenv
 from bot_logic import gen_pass, gen_emodji, flip_coin  # Импортируем функции из bot_logic
+import os
 
-# Замени 'TOKEN' на токен твоего бота
-bot = telebot.TeleBot("7563344362:AAEAqFZ7gh7vjQ3_ztfoXwhvjxprzOolR60")
+load_dotenv()  # Load environment variables from .env file
+TOKEN = os.getenv("TOKEN")
+
+bot = telebot.TeleBot("TOKEN")
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
@@ -33,8 +37,7 @@ def send_coin(message):
 
 @bot.message_handler(content_types=['photo'])
 def photo_check(message):
-    if not message.photo:
-        return bot.send_message(message.chat.id, "Вы забыли загрузить картинку :(")
+    
     file_info = bot.get_file(message.photo[-1].file_id)
     file_name = file_info.file_path.split('/')[-1]
     
